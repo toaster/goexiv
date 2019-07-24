@@ -79,11 +79,15 @@ func (d *IptcData) FindKey(key string) (*IptcDatum, error) {
 
 // Key returns the IPTC key of the datum.
 func (d *IptcDatum) Key() string {
-	return C.GoString(C.exiv2_iptc_datum_key(d.datum))
+	cstr := C.exiv2_iptc_datum_key(d.datum)
+	defer C.free(unsafe.Pointer(cstr))
+	return C.GoString(cstr)
 }
 
 func (d *IptcDatum) String() string {
-	return C.GoString(C.exiv2_iptc_datum_to_string(d.datum))
+	cstr := C.exiv2_iptc_datum_to_string(d.datum)
+	defer C.free(unsafe.Pointer(cstr))
+	return C.GoString(cstr)
 }
 
 // Iterator returns a new IptcDatumIterator to iterate over all IPTC data.

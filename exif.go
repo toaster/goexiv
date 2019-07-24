@@ -79,11 +79,15 @@ func (d *ExifData) FindKey(key string) (*ExifDatum, error) {
 
 // Key returns the Exif key of the datum.
 func (d *ExifDatum) Key() string {
-	return C.GoString(C.exiv2_exif_datum_key(d.datum))
+	cstr := C.exiv2_exif_datum_key(d.datum)
+	defer C.free(unsafe.Pointer(cstr))
+	return C.GoString(cstr)
 }
 
 func (d *ExifDatum) String() string {
-	return C.GoString(C.exiv2_exif_datum_to_string(d.datum))
+	cstr := C.exiv2_exif_datum_to_string(d.datum)
+	defer C.free(unsafe.Pointer(cstr))
+	return C.GoString(cstr)
 }
 
 // Iterator returns a new ExifDatumIterator to iterate over all Exif data.

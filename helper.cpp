@@ -240,14 +240,16 @@ Exiv2IptcDatum* exiv2_iptc_datum_iterator_next(Exiv2IptcDatumIterator *iter)
 
 DEFINE_FREE_FUNCTION(exiv2_iptc_data, Exiv2IptcData*);
 
-const char* exiv2_iptc_datum_key(const Exiv2IptcDatum *datum)
+char* exiv2_iptc_datum_key(const Exiv2IptcDatum *datum)
 {
-	return datum->datum.key().c_str();
+	const std::string strval = datum->datum.key();
+	return strdup(strval.c_str());
 }
 
-const char* exiv2_iptc_datum_to_string(const Exiv2IptcDatum *datum)
+char* exiv2_iptc_datum_to_string(const Exiv2IptcDatum *datum)
 {
-	return datum->datum.toString(0).c_str();
+	const std::string strval = datum->datum.toString(0);
+	return strdup(strval.c_str());
 }
 
 DEFINE_FREE_FUNCTION(exiv2_iptc_datum, Exiv2IptcDatum*);
@@ -309,14 +311,16 @@ Exiv2ExifDatum* exiv2_exif_datum_iterator_next(Exiv2ExifDatumIterator *iter)
 
 DEFINE_FREE_FUNCTION(exiv2_exif_data, Exiv2ExifData*);
 
-const char* exiv2_exif_datum_key(const Exiv2ExifDatum *datum)
+char* exiv2_exif_datum_key(const Exiv2ExifDatum *datum)
 {
-	return datum->datum.key().c_str();
+	const std::string strval = datum->datum.key();
+	return strdup(strval.c_str());
 }
 
-const char* exiv2_exif_datum_to_string(const Exiv2ExifDatum *datum)
+char* exiv2_exif_datum_to_string(const Exiv2ExifDatum *datum)
 {
-	return datum->datum.toString().c_str();
+	const std::string strval = datum->datum.toString();
+	return strdup(strval.c_str());
 }
 
 DEFINE_FREE_FUNCTION(exiv2_exif_datum, Exiv2ExifDatum*);
