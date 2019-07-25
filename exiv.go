@@ -10,11 +10,13 @@ import (
 	"unsafe"
 )
 
+// Error represents an error including a code.
 type Error struct {
 	code int
 	what string
 }
 
+// Image wraps the respective C++ structure.
 type Image struct {
 	img *C.Exiv2Image
 }
@@ -23,6 +25,7 @@ func (e *Error) Error() string {
 	return e.what
 }
 
+// Code returns the error code.
 func (e *Error) Code() int {
 	return e.code
 }

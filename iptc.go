@@ -10,11 +10,13 @@ import (
 	"unsafe"
 )
 
+// IptcData wraps the respective C++ structure.
 type IptcData struct {
 	img  *Image // We point to img to keep it alive
 	data *C.Exiv2IptcData
 }
 
+// IptcDatum wraps the respective C++ structure.
 type IptcDatum struct {
 	data  *IptcData
 	datum *C.Exiv2IptcDatum
@@ -56,10 +58,12 @@ func makeIptcDatum(data *IptcData, cdatum *C.Exiv2IptcDatum) *IptcDatum {
 	return datum
 }
 
+// GetIptcData returns the IPTC data of the image.
 func (i *Image) GetIptcData() *IptcData {
 	return makeIptcData(i, C.exiv2_image_get_iptc_data(i.img))
 }
 
+// FindKey returns the IPTC datum for the given key if present.
 func (d *IptcData) FindKey(key string) (*IptcDatum, error) {
 	ckey := C.CString(key)
 	defer C.free(unsafe.Pointer(ckey))

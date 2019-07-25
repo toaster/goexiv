@@ -10,11 +10,13 @@ import (
 	"unsafe"
 )
 
+// ExifData wraps the respective C++ structure.
 type ExifData struct {
 	img  *Image // We point to img to keep it alive
 	data *C.Exiv2ExifData
 }
 
+// ExifDatum wraps the respective C++ structure.
 type ExifDatum struct {
 	data  *ExifData
 	datum *C.Exiv2ExifDatum
@@ -56,10 +58,12 @@ func makeExifDatum(data *ExifData, cdatum *C.Exiv2ExifDatum) *ExifDatum {
 	return datum
 }
 
+// GetExifData returns the Exif data of the image.
 func (i *Image) GetExifData() *ExifData {
 	return makeExifData(i, C.exiv2_image_get_exif_data(i.img))
 }
 
+// FindKey returns the Exif datum for the given key if present.
 func (d *ExifData) FindKey(key string) (*ExifDatum, error) {
 	ckey := C.CString(key)
 	defer C.free(unsafe.Pointer(ckey))
