@@ -122,6 +122,11 @@ exiv2_image_read_metadata(Exiv2Image *img, Exiv2Error **error)
 
 DEFINE_FREE_FUNCTION(exiv2_image, Exiv2Image*);
 
+char* exiv2_image_get_mime_type(Exiv2Image *img) {
+	const std::string strval = img->image->mimeType();
+  return strdup(strval.c_str());
+}
+
 int exiv2_image_get_pixel_width(Exiv2Image *img) {
 	return img->image->pixelWidth();
 }

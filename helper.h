@@ -25,6 +25,7 @@ Exiv2Image* exiv2_image_factory_open_bytes(const unsigned char *path, long size,
 void exiv2_image_read_metadata(Exiv2Image *img, Exiv2Error **error);
 void exiv2_image_free(Exiv2Image *img);
 
+char* exiv2_image_get_mime_type(Exiv2Image *img);
 int exiv2_image_get_pixel_width(Exiv2Image *img);
 int exiv2_image_get_pixel_height(Exiv2Image *img);
 

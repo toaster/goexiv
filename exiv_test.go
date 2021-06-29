@@ -237,3 +237,20 @@ func TestNoMetadata(t *testing.T) {
 
 	assert.Nil(t, img.ICCProfile())
 }
+
+func TestImage_MimeType(t *testing.T) {
+	img, err := goexiv.Open("testdata/pixel.jpg")
+	require.NoError(t, err)
+
+	assert.Equal(t, "image/jpeg", img.MimeType())
+
+	img, err = goexiv.Open("testdata/pixel.png")
+	require.NoError(t, err)
+
+	assert.Equal(t, "image/png", img.MimeType())
+
+	img, err = goexiv.Open("testdata/pixel.gif")
+	require.NoError(t, err)
+
+	assert.Equal(t, "image/gif", img.MimeType())
+}

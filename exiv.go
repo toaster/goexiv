@@ -104,6 +104,13 @@ func (i *Image) ReadMetadata() error {
 	return nil
 }
 
+// MimeType returns the mime type of the image.
+func (i *Image) MimeType() string {
+	cstr := C.exiv2_image_get_mime_type(i.img)
+	defer C.free(unsafe.Pointer(cstr))
+	return C.GoString(cstr)
+}
+
 // PixelWidth returns the width of the image in pixels.
 func (i *Image) PixelWidth() int64 {
 	return int64(C.exiv2_image_get_pixel_width(i.img))
