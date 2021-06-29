@@ -58,11 +58,17 @@ func Test_OpenBytesFailures(t *testing.T) {
 		wantErr     string
 		wantErrCode int
 	}{
+		// {
+		// 	"no image",
+		// 	[]byte("no image"),
+		// 	"The memory contains data of an unknown image type",
+		// 	12,
+		// },
 		{
 			"no image",
 			[]byte("no image"),
-			"The memory contains data of an unknown image type",
-			12,
+			"Failed to read input data",
+			20,
 		},
 		{
 			"empty byte slice",
