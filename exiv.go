@@ -52,7 +52,7 @@ func makeImage(cimg *C.Exiv2Image) *Image {
 
 // Open opens an image file from the filesystem and returns a pointer to
 // the corresponding Image object, but does not read the Metadata.
-// Start the parsing with a call to ReadMetadata()
+// Start the parsing with a call to ReadMetadata().
 func Open(path string) (*Image, error) {
 	cpath := C.CString(path)
 	defer C.free(unsafe.Pointer(cpath))
@@ -72,7 +72,7 @@ func Open(path string) (*Image, error) {
 
 // OpenBytes opens a byte slice with image data and returns a pointer to
 // the corresponding Image object, but does not read the Metadata.
-// Start the parsing with a call to ReadMetadata()
+// Start the parsing with a call to ReadMetadata().
 func OpenBytes(b []byte) (*Image, error) {
 	if len(b) == 0 {
 		return nil, &Error{0, "input is empty"}
@@ -89,7 +89,7 @@ func OpenBytes(b []byte) (*Image, error) {
 	return makeImage(cimg), nil
 }
 
-// ReadMetadata reads the metadata of an Image
+// ReadMetadata reads the metadata of an Image.
 func (i *Image) ReadMetadata() error {
 	var cerr *C.Exiv2Error
 
@@ -104,12 +104,12 @@ func (i *Image) ReadMetadata() error {
 	return nil
 }
 
-// PixelWidth returns the width of the image in pixels
+// PixelWidth returns the width of the image in pixels.
 func (i *Image) PixelWidth() int64 {
 	return int64(C.exiv2_image_get_pixel_width(i.img))
 }
 
-// PixelHeight returns the height of the image in pixels
+// PixelHeight returns the height of the image in pixels.
 func (i *Image) PixelHeight() int64 {
 	return int64(C.exiv2_image_get_pixel_height(i.img))
 }
