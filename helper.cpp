@@ -4,12 +4,20 @@
 #include <exiv2/image.hpp>
 
 #include <stdio.h>
+#include <utility>
 
 #define DEFINE_STRUCT(name,wrapped_type,member_name) \
 struct _##name { \
 	_##name(wrapped_type member_name) \
 		: member_name(member_name) {} \
 	wrapped_type member_name; \
+};
+
+#define DEFINE_STRUCT_NEW(name, wrapped_type, member_name) \
+struct _##name { \
+    explicit _##name(wrapped_type member_name) \
+        : member_name(std::move(member_name)) {} \
+    wrapped_type member_name; \
 };
 
 #define DEFINE_FREE_FUNCTION(name,type) \
@@ -19,7 +27,7 @@ void name##_free(type x) \
 }
 
 DEFINE_STRUCT(Exiv2ImageFactory, Exiv2::ImageFactory*, factory);
-DEFINE_STRUCT(Exiv2Image, Exiv2::Image::AutoPtr, image);
+DEFINE_STRUCT_NEW(Exiv2Image, Exiv2::Image::UniquePtr, image);
 
 DEFINE_STRUCT(Exiv2XmpData, const Exiv2::XmpData&, data);
 DEFINE_STRUCT(Exiv2XmpDatum, const Exiv2::Xmpdatum&, datum);
@@ -57,7 +65,7 @@ struct _Exiv2Error {
 };
 
 _Exiv2Error::_Exiv2Error(const Exiv2::Error &error)
-	: code(error.code())
+	: code(static_cast<int>(error.code()))
 	, what(strdup(error.what()))
 {
 }
@@ -125,7 +133,7 @@ int exiv2_image_get_pixel_height(Exiv2Image *img) {
 const unsigned char* exiv2_image_icc_profile(Exiv2Image *img)
 {
 	if (img->image->iccProfileDefined()) {
-		return img->image->iccProfile()->pData_;
+		return img->image->iccProfile().c_data();
 	}
 	return NULL;
 }
@@ -133,7 +141,7 @@ const unsigned char* exiv2_image_icc_profile(Exiv2Image *img)
 long exiv2_image_icc_profile_size(Exiv2Image *img)
 {
 	if (img->image->iccProfileDefined()) {
-		return img->image->iccProfile()->size_;
+		return img->image->iccProfile().size();
 	}
 	return 0;
 }
