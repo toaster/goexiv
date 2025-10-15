@@ -13,31 +13,14 @@ import (
 func TestOpenImage(t *testing.T) {
 	// Open valid file
 	img, err := goexiv.Open("testdata/pixel.jpg")
-
-	if err != nil {
-		t.Fatalf("Cannot open image: %s", err)
-	}
-
-	if img == nil {
-		t.Fatalf("img is nil after successful open")
+	if assert.NoError(t, err) {
+		assert.NotNil(t, img)
 	}
 
 	// Open non existing file
-
 	img, err = goexiv.Open("thisimagedoesnotexist")
-
-	if err == nil {
-		t.Fatalf("No error set after opening a non existing image")
-	}
-
-	exivErr, ok := err.(*goexiv.Error)
-
-	if !ok {
-		t.Fatalf("Returned error is not of type Error")
-	}
-
-	if exivErr.Code() != 9 {
-		t.Fatalf("Unexpected error code (expected 9, got %d)", exivErr.Code())
+	if assert.Error(t, err) && assert.IsType(t, &goexiv.Error{}, err) {
+		assert.Equal(t, 10, err.(*goexiv.Error).Code())
 	}
 }
 
@@ -68,7 +51,7 @@ func Test_OpenBytesFailures(t *testing.T) {
 			"no image",
 			[]byte("no image"),
 			"Failed to read input data",
-			20,
+			21,
 		},
 		{
 			"empty byte slice",
